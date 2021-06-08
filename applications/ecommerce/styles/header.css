@@ -1,0 +1,18 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: var(--black);
+  color: var(--white);
+
+  padding: var(--med-size);
+  border-bottom: var(--tiny-size) solid var(--white);
+}
+
+header > button {
+  background-color: var(--primary-button);
+  padding: var(--small-size) var(--med-size);
+  border-radius: var(--med-border-radius);
+  color: var(--white);
+}
