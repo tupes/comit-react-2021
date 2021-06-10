@@ -1,0 +1,14 @@
+footer {
+  background-color: var(--black);
+  color: var(--white);
+  padding: var(--med-size);
+  border-top: var(--tiny-size) solid var(--white);
+}
+
+footer a {
+  color: var(--medium-green);
+}
+
+footer a:hover {
+  font-weight: bold;
+}
