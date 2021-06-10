@@ -7,8 +7,6 @@
   flex-direction: column;
   align-items: center;
   gap: var(--med-size);
-
-  background-color: var(--black);
 }
 
 .categories li {
