@@ -1,0 +1,30 @@
+.categories {
+  padding-left: var(--med-size);
+}
+
+.categories > ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--med-size);
+}
+
+.categories li {
+  width: 100%;
+}
+
+.categories button {
+  background-color: var(--primary-button);
+  min-height: var(--huge-size);
+  border-radius: var(--med-border-radius);
+
+  width: 100%;
+}
+
+.categories a {
+  color: var(--white);
+}
+
+.categories a:hover {
+  font-weight: bold;
+}
