@@ -1,34 +1,15 @@
 import React from "react";
 
+import ProductCategory from "./ProductCategory.js";
+import productCategories from "../data/productCategories.json";
+
 export default function ProductCategories() {
   return (
-    <section class="categories">
+    <section className="categories">
       <ul>
-        <li>
-          <button>
-            <a href="pages/watersports.html">Watersports</a>
-          </button>
-        </li>
-        <li>
-          <button>
-            <a href="pages/soccer.html">Soccer</a>
-          </button>
-        </li>
-        <li>
-          <button>
-            <a href="pages/basketball.html">Basketball</a>
-          </button>
-        </li>
-        <li>
-          <button>
-            <a href="pages/hockey.html">Hockey</a>
-          </button>
-        </li>
-        <li>
-          <button>
-            <a href="pages/boardgames.html">Boardgames</a>
-          </button>
-        </li>
+        {productCategories.map((productCategory) => (
+          <ProductCategory category={productCategory} key={productCategory} />
+        ))}
       </ul>
     </section>
   );
