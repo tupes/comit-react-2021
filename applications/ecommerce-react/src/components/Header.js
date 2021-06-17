@@ -1,14 +1,11 @@
 import React from "react";
 
-import { welcome, messageTarget } from "../utils.js";
-
-export default function Header() {
+export default function Header(props) {
   return (
     <header>
-      <h1>Sports Store</h1>
-      <div>{`${welcome} ${messageTarget}`}</div>
+      <h1>{props.title}</h1>
       <button>
-        <a href="signup.html">Sign up</a>
+        <a href="signup.html">{props.buttonText}</a>
       </button>
     </header>
   );
