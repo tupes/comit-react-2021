@@ -1,9 +1,11 @@
 import React from "react";
 
 export default function Footer(props) {
+  const children = React.Children.toArray(props.children);
+
   return (
     <footer>
-      <h4>Contact us</h4>
+      {children[0]}
       <ul>
         <li>
           <a href="mailto:sportsstore@store.com">{props.email}</a>
@@ -12,6 +14,7 @@ export default function Footer(props) {
           <a href="tel:+01-780-555-5555">{props.phone}</a>
         </li>
       </ul>
+      {children[1]}
     </footer>
   );
 }
