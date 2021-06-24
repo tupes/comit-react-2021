@@ -2,13 +2,13 @@ import React from "react";
 
 import Product from "./Product.js";
 
-import products from "../data/products.json";
+export default function ProductsList(props) {
+  console.log(`Rendering ProductsList with ${props.products.length} products`);
 
-export default function ProductsList() {
   return (
     <section className="items">
       <ul>
-        {products.map((product) => (
+        {props.products.map((product) => (
           <Product
             imageUrl={product.imageUrl}
             name={product.name}

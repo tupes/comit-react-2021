@@ -19,12 +19,13 @@
   border-radius: var(--med-border-radius);
 
   width: 100%;
-}
-
-.categories a {
   color: var(--white);
 }
 
 .categories a:hover {
   font-weight: bold;
+}
+
+.categories .selected-category {
+  background-color: var(--warning-button);
 }

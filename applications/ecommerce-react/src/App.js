@@ -1,5 +1,5 @@
-import Header from "./components/HeaderClass.js";
-import ProductCategories from "./components/ProductCategories.js";
+import Header from "./components/classComponents/Header.js";
+import ProductCategories from "./components/classComponents/ProductCategories.js";
 import ProductsList from "./components/ProductsList.js";
 import Footer from "./components/Footer.js";
 
@@ -8,12 +8,10 @@ function getButtonText() {
 }
 
 function App() {
-  const selectedCategory = "soccer";
-
   return (
     <div className="container">
       <Header title="Sports Store" buttonText={getButtonText()} />
-      <ProductCategories selectedCategory={selectedCategory} />
+      <ProductCategories />
       <ProductsList />
       <Footer email="sports_store@store.com" phone="780-555-5556">
         <h4>Contact us</h4>

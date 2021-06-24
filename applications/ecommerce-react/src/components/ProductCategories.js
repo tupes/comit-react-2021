@@ -1,6 +1,6 @@
 import React from "react";
 
-import ProductCategory from "./ProductCategory.js";
+import ProductCategory from "./classComponents/ProductCategory.js";
 import productCategories from "../data/productCategories.json";
 
 export default function ProductCategories() {
