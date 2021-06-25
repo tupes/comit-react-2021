@@ -2,7 +2,6 @@ import React from "react";
 
 export default class ProductCategory extends React.Component {
   render() {
-    console.log(`Rendering ProductCategory ${this.props.category}`);
     return (
       <li>
         <button
