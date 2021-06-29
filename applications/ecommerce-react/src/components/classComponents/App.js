@@ -37,6 +37,11 @@ class App extends React.Component {
     this.setState({ selectedCategories });
   };
 
+  handleSubmit = (formValues) => {
+    console.log("form submitted");
+    this.setState({ currentPage: "products" });
+  };
+
   render() {
     return (
       <div className="container">
@@ -60,7 +65,7 @@ class App extends React.Component {
             />
           </>
         ) : (
-          <SignupPage />
+          <SignupPage handleSubmit={this.handleSubmit} />
         )}
 
         <Footer email="sports_store@store.com" phone="780-555-5556">
