@@ -14,11 +14,16 @@ export default class ToggleableTimerForm extends Component {
     this.setState({ isOpen: false });
   };
 
+  handleCreateTimer = (timerData) => {
+    this.handleFormClose();
+    this.props.handleSubmitForm(timerData);
+  };
+
   render() {
     if (this.state.isOpen) {
       return (
         <TimerForm
-          handleSubmitForm={this.props.handleSubmitForm}
+          handleSubmitForm={this.handleCreateTimer}
           handleCancel={this.handleFormClose}
         />
       );

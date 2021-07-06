@@ -15,6 +15,11 @@ export default class EditableTimer extends Component {
     this.setState({ editFormOpen: true });
   };
 
+  handleUpdateTimer = (timerData) => {
+    this.handleFormClose();
+    this.props.handleSubmitForm(timerData);
+  };
+
   render() {
     if (this.state.editFormOpen) {
       return (
@@ -22,7 +27,7 @@ export default class EditableTimer extends Component {
           id={this.props.id}
           title={this.props.title}
           project={this.props.project}
-          handleSubmitForm={this.props.handleSubmitForm}
+          handleSubmitForm={this.handleUpdateTimer}
           handleCancel={this.handleFormClose}
         />
       );
