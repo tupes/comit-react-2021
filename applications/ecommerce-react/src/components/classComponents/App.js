@@ -6,7 +6,7 @@ import ProductCategories from "./ProductCategories.js";
 import ProductsList from "../ProductsList.js";
 import Footer from "../Footer.js";
 
-import products from "../../data/products.json";
+import { loadProductsData } from "../../services/fakeDataRepository.js";
 
 function getButtonText() {
   return Math.random() > 0.5 ? "Sign up" : "Create an account";
@@ -16,7 +16,20 @@ class App extends React.Component {
   state = {
     currentPage: "products",
     selectedCategories: [],
+    products: [],
   };
+
+  componentDidMount() {
+    console.log("App component mounted");
+    const products = loadProductsData();
+    this.setState({ products });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log(
+    //   `App component updated from ${prevState.currentPage} to ${this.state.currentPage}`
+    // );
+  }
 
   handleNavigation = (event) => {
     this.setState({ currentPage: event.target.id });
@@ -24,7 +37,6 @@ class App extends React.Component {
 
   handleSelectCategory = (event) => {
     const category = event.target.id;
-    console.log(`Event of type ${event.type} caused by ${category}`);
 
     let selectedCategories;
     if (this.state.selectedCategories.includes(category)) {
@@ -43,6 +55,9 @@ class App extends React.Component {
   };
 
   render() {
+    console.log(
+      `App component rendering with ${this.state.products.length} products`
+    );
     return (
       <div className="container">
         <Header
@@ -57,7 +72,7 @@ class App extends React.Component {
               handleSelectCategory={this.handleSelectCategory}
             />
             <ProductsList
-              products={products.filter(
+              products={this.state.products.filter(
                 (product) =>
                   this.state.selectedCategories.includes(product.category) ||
                   !this.state.selectedCategories.length
