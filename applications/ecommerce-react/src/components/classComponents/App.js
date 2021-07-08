@@ -6,7 +6,7 @@ import ProductCategories from "./ProductCategories.js";
 import ProductsList from "../ProductsList.js";
 import Footer from "../Footer.js";
 
-import { loadProductsData } from "../../services/fakeDataRepository.js";
+import * as dataRepository from "../../services/dataRepository.js";
 
 function getButtonText() {
   return Math.random() > 0.5 ? "Sign up" : "Create an account";
@@ -17,18 +17,21 @@ class App extends React.Component {
     currentPage: "products",
     selectedCategories: [],
     products: [],
+    productCategories: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("App component mounted");
-    const products = loadProductsData();
-    this.setState({ products });
+    const [productCategories, products] = await Promise.all([
+      dataRepository.loadProductCategoriesData(),
+      dataRepository.loadProductsData(),
+    ]);
+
+    this.setState({ products, productCategories });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log(
-    //   `App component updated from ${prevState.currentPage} to ${this.state.currentPage}`
-    // );
+    console.log(`App component updated`);
   }
 
   handleNavigation = (event) => {
@@ -68,6 +71,7 @@ class App extends React.Component {
         {this.state.currentPage === "products" ? (
           <>
             <ProductCategories
+              productCategories={this.state.productCategories}
               selectedCategories={this.state.selectedCategories}
               handleSelectCategory={this.handleSelectCategory}
             />

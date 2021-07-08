@@ -1,0 +1,36 @@
+POST http://localhost:3000/products HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Soccer cleats",
+    "price": 144,
+    "description": "The best soccer cleats ever!",
+    "imageUrl": "imgs/ball.png",
+    "category": "soccer"
+}
+
+###
+
+PUT http://localhost:3000/products/4 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Team Canada soccer jersey",
+    "price": 150,
+    "description": "Display your national pride with this authentic Team Canada soccer jersey!",
+    "imageUrl": "imgs/shirtCanada.png",
+    "category": "soccer"
+}
+
+###
+
+PATCH http://localhost:3000/products/4 HTTP/1.1
+content-type: application/json
+
+{
+    "price": 110
+}
+
+###
+
+DELETE http://localhost:3000/products/6 HTTP/1.1
