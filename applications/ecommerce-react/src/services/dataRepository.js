@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOST = "http://localhost:3000";
+const HOST = "http://localhost:8000";
 
 export async function loadProductsData() {
   const response = await axios.get(`${HOST}/products`);

@@ -9,9 +9,10 @@ header {
   border-bottom: var(--tiny-size) solid var(--white);
 }
 
-header > button {
+header button {
   background-color: var(--primary-button);
   padding: var(--small-size) var(--med-size);
   border-radius: var(--med-border-radius);
   color: var(--white);
+  margin-right: var(--small-size);
 }

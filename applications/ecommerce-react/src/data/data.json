@@ -47,5 +47,26 @@
     "basketball",
     "hockey",
     "boardgames"
+  ],
+  "users": [
+    {
+      "username": "Mark",
+      "email": "a@a.com",
+      "dob": "2021-07-01",
+      "password": "a",
+      "id": 1
+    }
+  ],
+  "cart": [
+    {
+      "userId": 1,
+      "productId": "1",
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "productId": 2,
+      "id": 2
+    }
   ]
 }
