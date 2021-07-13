@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export default class LoginPage extends Component {
   state = {
     id: "",
-    username: "",
+    email: "",
     password: "",
   };
 
@@ -36,12 +36,12 @@ export default class LoginPage extends Component {
             </li>
             <li>
               <label>
-                Username
+                Email
                 <input
                   onChange={this.handleChange}
-                  value={this.state.username}
-                  type="text"
-                  name="username"
+                  value={this.state.email}
+                  type="email"
+                  name="email"
                 />
               </label>
             </li>

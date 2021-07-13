@@ -50,23 +50,38 @@
   ],
   "users": [
     {
+      "uid": "EW0IHs0lhgVGCJXMCFpzcNf0WeD2",
       "username": "Mark",
       "email": "a@a.com",
-      "dob": "2021-07-01",
-      "password": "a",
+      "dob": "",
       "id": 1
     }
   ],
   "cart": [
     {
       "userId": 1,
-      "productId": "1",
-      "id": 1
+      "productId": 2,
+      "id": 2
     },
     {
       "userId": 1,
-      "productId": 2,
-      "id": 2
+      "productId": 1,
+      "id": 3
+    },
+    {
+      "userId": 2,
+      "productId": 1,
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "productId": 4,
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "productId": 3,
+      "id": 6
     }
   ]
 }

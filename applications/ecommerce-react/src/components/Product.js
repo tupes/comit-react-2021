@@ -7,9 +7,11 @@ export default function Product(props) {
       <h3>{props.name}</h3>
       <div>${props.price}</div>
       <p>{props.description}</p>
-      <button id={props.productId} onClick={props.handleAddToCart}>
-        Add to cart
-      </button>
+      {props.isUserLoggedIn && (
+        <button id={props.productId} onClick={props.handleAddToCart}>
+          Add to cart
+        </button>
+      )}
     </li>
   );
 }

@@ -13,6 +13,7 @@ export default function ProductsList(props) {
             name={product.name}
             price={product.price}
             description={product.description}
+            isUserLoggedIn={props.isUserLoggedIn}
             handleAddToCart={props.handleAddToCart}
             key={product.id}
           />

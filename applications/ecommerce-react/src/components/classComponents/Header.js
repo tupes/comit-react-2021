@@ -8,9 +8,14 @@ export default class Header extends React.Component {
           {this.props.title}
         </h1>
         {this.props.isUserLoggedIn ? (
-          <button id="logout" onClick={this.props.handleLogout}>
-            Logout
-          </button>
+          <div>
+            <button id="cart" onClick={this.props.handleNavigation}>
+              {`Cart: ${this.props.cartCount}`}
+            </button>
+            <button id="logout" onClick={this.props.handleLogout}>
+              Logout
+            </button>
+          </div>
         ) : (
           <div>
             <button id="signup" onClick={this.props.handleNavigation}>
