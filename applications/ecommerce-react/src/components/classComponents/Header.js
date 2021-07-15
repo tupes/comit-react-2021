@@ -1,28 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default class Header extends React.Component {
   render() {
     return (
       <header>
-        <h1 id="products" onClick={this.props.handleNavigation}>
-          {this.props.title}
+        <h1 id="products">
+          <Link to="/">{this.props.title}</Link>
         </h1>
         {this.props.isUserLoggedIn ? (
           <div>
-            <button id="cart" onClick={this.props.handleNavigation}>
-              {`Cart: ${this.props.cartCount}`}
-            </button>
+            <Link to="/cart">{`Cart: ${this.props.cartCount}`}</Link>
             <button id="logout" onClick={this.props.handleLogout}>
               Logout
             </button>
           </div>
         ) : (
           <div>
-            <button id="signup" onClick={this.props.handleNavigation}>
-              {this.props.buttonText}
+            <button>
+              <Link to="/signup">{this.props.buttonText}</Link>
             </button>
-            <button id="login" onClick={this.props.handleNavigation}>
-              Login
+            <button>
+              <Link to="/login">Login</Link>
             </button>
           </div>
         )}

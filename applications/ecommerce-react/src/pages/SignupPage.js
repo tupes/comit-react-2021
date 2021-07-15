@@ -22,7 +22,7 @@ export default class SignupPage extends Component {
     return (
       <>
         <div></div>
-        <form onSubmit={this.handleSubmit} method="post">
+        <form className="user-form" onSubmit={this.handleSubmit} method="post">
           <ul>
             <li>
               <label>

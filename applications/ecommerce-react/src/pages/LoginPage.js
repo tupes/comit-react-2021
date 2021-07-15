@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 export default class LoginPage extends Component {
   state = {
-    id: "",
     email: "",
     password: "",
   };
@@ -21,19 +20,9 @@ export default class LoginPage extends Component {
     return (
       <>
         <div></div>
-        <form onSubmit={this.handleSubmit} method="post">
+        <form className="user-form" onSubmit={this.handleSubmit} method="post">
+          <p>{this.props.error}</p>
           <ul>
-            <li>
-              <label>
-                ID
-                <input
-                  onChange={this.handleChange}
-                  value={this.state.id}
-                  type="number"
-                  name="id"
-                />
-              </label>
-            </li>
             <li>
               <label>
                 Email

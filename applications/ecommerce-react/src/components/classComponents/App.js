@@ -1,11 +1,11 @@
 import React from "react";
+import { Route } from "react-router-dom";
 
+import ProductsPage from "../../pages/ProductsPage.js";
 import SignupPage from "../../pages/SignupPage.js";
 import LoginPage from "../../pages/LoginPage.js";
 
 import Header from "./Header.js";
-import ProductCategories from "./ProductCategories.js";
-import ProductsList from "../ProductsList.js";
 import Footer from "../Footer.js";
 
 import * as dataRepository from "../../services/dataRepository.js";
@@ -18,7 +18,7 @@ function getButtonText() {
 
 class App extends React.Component {
   state = {
-    currentPage: "products",
+    error: null,
     user: null,
     cart: [],
     selectedCategories: [],
@@ -39,18 +39,6 @@ class App extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     console.log(`App component updated`);
   }
-
-  handleNavigation = (event) => {
-    this.setState({ currentPage: event.target.id });
-  };
-
-  handleHomeNavigation = () => {
-    this.setState({ currentPage: "products" });
-  };
-
-  handleSignupNavigation = (event) => {
-    this.setState({ currentPage: "signup" });
-  };
 
   handleSelectCategory = (event) => {
     const category = event.target.id;
@@ -83,7 +71,7 @@ class App extends React.Component {
         username: response.data.username,
         email: response.data.email,
       };
-      this.setState({ user, currentPage: "products" });
+      this.setState({ user });
     } catch (error) {
       console.log(`Error from creating user: ${{ error }}`);
     }
@@ -107,13 +95,26 @@ class App extends React.Component {
         email: userData.email,
       };
       const cartResponse = await userRepository.getCart(user.id);
-      this.setState({ user, cart: cartResponse.data, currentPage: "products" });
+      this.setState({
+        user,
+        cart: cartResponse.data,
+        error: null,
+      });
     } catch (error) {
-      console.log(`Error from logging in user: ${error.message}`);
+      let errorMessage = "Something went wrong";
+      if (
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password"
+      ) {
+        errorMessage = "Unable to login";
+      }
+      console.log(errorMessage);
+      this.setState({ error: errorMessage });
     }
   };
 
-  handleLogout = () => {
+  handleLogout = async () => {
+    await authRepository.logout();
     this.setState({ user: null });
   };
 
@@ -134,6 +135,7 @@ class App extends React.Component {
       this.setState({ cart: updatedCart });
     } catch (error) {
       console.error(`Error thrown from handleAddToCart: ${error.message}`);
+      this.setState({ error: "Unable to add product to cart" });
     }
   };
 
@@ -142,32 +144,6 @@ class App extends React.Component {
       `App component rendering with ${this.state.products.length} products`
     );
 
-    let page;
-    if (this.state.currentPage === "products") {
-      page = (
-        <>
-          <ProductCategories
-            productCategories={this.state.productCategories}
-            selectedCategories={this.state.selectedCategories}
-            handleSelectCategory={this.handleSelectCategory}
-          />
-          <ProductsList
-            products={this.state.products.filter(
-              (product) =>
-                this.state.selectedCategories.includes(product.category) ||
-                !this.state.selectedCategories.length
-            )}
-            isUserLoggedIn={this.state.user}
-            handleAddToCart={this.handleAddToCart}
-          />
-        </>
-      );
-    } else if (this.state.currentPage === "signup") {
-      page = <SignupPage handleSubmit={this.handleCreateUser} />;
-    } else {
-      page = <LoginPage handleSubmit={this.handleLogin} />;
-    }
-
     return (
       <div className="container">
         <Header
@@ -175,10 +151,39 @@ class App extends React.Component {
           isUserLoggedIn={this.state.user}
           cartCount={this.state.cart && this.state.cart.length}
           buttonText={getButtonText()}
-          handleNavigation={this.handleNavigation}
           handleLogout={this.handleLogout}
         />
-        {page}
+
+        <Route
+          path="/login"
+          exact
+          render={() => (
+            <LoginPage
+              handleSubmit={this.handleLogin}
+              error={this.state.error}
+            />
+          )}
+        />
+        <Route
+          path="/signup"
+          exact
+          render={() => <SignupPage handleSubmit={this.handleCreateUser} />}
+        />
+        <Route
+          path="/"
+          exact
+          render={() => (
+            <ProductsPage
+              productCategories={this.state.productCategories}
+              selectedCategories={this.state.selectedCategories}
+              products={this.state.products}
+              handleSelectCategory={this.handleSelectCategory}
+              handleAddToCart={this.handleAddToCart}
+              isUserLoggedIn={this.state.user}
+            />
+          )}
+        />
+
         <Footer email="sports_store@store.com" phone="780-555-5556">
           <h4>Contact us</h4>
           <p>
