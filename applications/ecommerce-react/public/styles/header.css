@@ -16,3 +16,7 @@ header button {
   color: var(--white);
   margin-right: var(--small-size);
 }
+
+.link {
+  color: var(--white);
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
 import ProductsPage from "../../pages/ProductsPage.js";
 import SignupPage from "../../pages/SignupPage.js";
@@ -95,6 +95,7 @@ class App extends React.Component {
         email: userData.email,
       };
       const cartResponse = await userRepository.getCart(user.id);
+      this.props.history.push("/products");
       this.setState({
         user,
         cart: cartResponse.data,
@@ -154,35 +155,23 @@ class App extends React.Component {
           handleLogout={this.handleLogout}
         />
 
-        <Route
-          path="/login"
-          exact
-          render={() => (
-            <LoginPage
-              handleSubmit={this.handleLogin}
-              error={this.state.error}
-            />
-          )}
-        />
-        <Route
-          path="/signup"
-          exact
-          render={() => <SignupPage handleSubmit={this.handleCreateUser} />}
-        />
-        <Route
-          path="/"
-          exact
-          render={() => (
-            <ProductsPage
-              productCategories={this.state.productCategories}
-              selectedCategories={this.state.selectedCategories}
-              products={this.state.products}
-              handleSelectCategory={this.handleSelectCategory}
-              handleAddToCart={this.handleAddToCart}
-              isUserLoggedIn={this.state.user}
-            />
-          )}
-        />
+        <Route path="/login" exact>
+          <LoginPage handleSubmit={this.handleLogin} error={this.state.error} />
+        </Route>
+        <Route path="/signup" exact>
+          <SignupPage handleSubmit={this.handleCreateUser} />
+        </Route>
+        <Route path="/products" exact>
+          <ProductsPage
+            productCategories={this.state.productCategories}
+            selectedCategories={this.state.selectedCategories}
+            products={this.state.products}
+            handleSelectCategory={this.handleSelectCategory}
+            handleAddToCart={this.handleAddToCart}
+            isUserLoggedIn={this.state.user}
+          />
+        </Route>
+        <Redirect to="/products" />
 
         <Footer email="sports_store@store.com" phone="780-555-5556">
           <h4>Contact us</h4>

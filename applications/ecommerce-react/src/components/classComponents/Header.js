@@ -6,11 +6,16 @@ export default class Header extends React.Component {
     return (
       <header>
         <h1 id="products">
-          <Link to="/">{this.props.title}</Link>
+          <Link className="link" to="/products">
+            {this.props.title}
+          </Link>
         </h1>
         {this.props.isUserLoggedIn ? (
           <div>
-            <Link to="/cart">{`Cart: ${this.props.cartCount}`}</Link>
+            <Link
+              className="link"
+              to="/cart"
+            >{`Cart: ${this.props.cartCount}`}</Link>
             <button id="logout" onClick={this.props.handleLogout}>
               Logout
             </button>
@@ -18,10 +23,14 @@ export default class Header extends React.Component {
         ) : (
           <div>
             <button>
-              <Link to="/signup">{this.props.buttonText}</Link>
+              <Link className="link" to="/signup">
+                {this.props.buttonText}
+              </Link>
             </button>
             <button>
-              <Link to="/login">Login</Link>
+              <Link className="link" to="/login">
+                Login
+              </Link>
             </button>
           </div>
         )}
