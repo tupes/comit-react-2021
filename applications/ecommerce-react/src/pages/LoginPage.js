@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 
 export default function LoginPage(props) {
-  // state = {
-  //   email: "",
-  //   password: "",
-  // };
-
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
 
@@ -20,7 +15,7 @@ export default function LoginPage(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.handleSubmit(this.state);
+    props.handleSubmit(formValues);
   };
 
   return (
@@ -37,6 +32,7 @@ export default function LoginPage(props) {
                 value={formValues.email}
                 type="email"
                 name="email"
+                required
               />
             </label>
           </li>
@@ -48,6 +44,7 @@ export default function LoginPage(props) {
                 value={formValues.password}
                 type="password"
                 name="password"
+                required
               />
             </label>
           </li>{" "}

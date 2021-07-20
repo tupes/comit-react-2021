@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Route, Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Redirect, useHistory } from "react-router-dom";
 
 import ProductsPage from "./pages/ProductsPage.js";
 import SignupPage from "./pages/SignupPage.js";
 import LoginPage from "./pages/LoginPage.js";
 
-import Header from "./components/Header.js";
+import Header from "./components/classComponents/Header.js";
 import Footer from "./components/Footer.js";
 
 import * as dataRepository from "./services/dataRepository.js";
@@ -17,15 +17,6 @@ function getButtonText() {
 }
 
 function App() {
-  // state = {
-  //   error: null,
-  //   user: null,
-  //   cart: [],
-  //   selectedCategories: [],
-  //   products: [],
-  //   productCategories: [],
-  // };
-
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
@@ -33,32 +24,38 @@ function App() {
   const [products, setProducts] = useState([]);
   const [productCategories, setProductCategories] = useState([]);
 
-  // async componentDidMount() {
-  //   console.log("App component mounted");
-  //   const [productCategories, products] = await Promise.all([
-  //     dataRepository.loadProductCategoriesData(),
-  //     dataRepository.loadProductsData(),
-  //   ]);
+  const history = useHistory();
 
-  //   this.setState({ products, productCategories });
-  // }
+  useEffect(() => {
+    const loadData = async () => {
+      console.log("In useEffect function");
+      const [productCategories, products] = await Promise.all([
+        dataRepository.loadProductCategoriesData(),
+        dataRepository.loadProductsData(),
+      ]);
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   console.log(`App component updated`);
-  // }
+      setProducts(products);
+      setProductCategories(productCategories);
+    };
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    console.log("User state variable changed");
+  }, [user]);
 
   const handleSelectCategory = (event) => {
     const category = event.target.id;
 
-    let selectedCategories;
+    let updatedSelectedCategories;
     if (selectedCategories.includes(category)) {
-      selectedCategories = selectedCategories.filter(
+      updatedSelectedCategories = selectedCategories.filter(
         (selectedCategory) => selectedCategory !== category
       );
     } else {
-      selectedCategories = [...selectedCategories, category];
+      updatedSelectedCategories = [...selectedCategories, category];
     }
-    this.setState({ selectedCategories });
+    setSelectedCategories(updatedSelectedCategories);
   };
 
   const handleCreateUser = async (formValues) => {
@@ -78,7 +75,10 @@ function App() {
         username: response.data.username,
         email: response.data.email,
       };
-      this.setState({ user });
+
+      setUser(user);
+
+      history.push("/products");
     } catch (error) {
       console.log(`Error from creating user: ${{ error }}`);
     }
@@ -102,12 +102,12 @@ function App() {
         email: userData.email,
       };
       const cartResponse = await userRepository.getCart(user.id);
-      this.props.history.push("/products");
-      this.setState({
-        user,
-        cart: cartResponse.data,
-        error: null,
-      });
+
+      setUser(user);
+      setCart(cartResponse.data);
+      setError(null);
+
+      history.push("/products");
     } catch (error) {
       let errorMessage = "Something went wrong";
       if (
@@ -117,13 +117,13 @@ function App() {
         errorMessage = "Unable to login";
       }
       console.log(errorMessage);
-      this.setState({ error: errorMessage });
+      setError(errorMessage);
     }
   };
 
   const handleLogout = async () => {
     await authRepository.logout();
-    this.setState({ user: null });
+    setUser(null);
   };
 
   const handleAddToCart = async (event) => {
@@ -140,10 +140,10 @@ function App() {
 
       const addedProduct = response.data;
       const updatedCart = [...cart, addedProduct];
-      this.setState({ cart: updatedCart });
+      setCart(updatedCart);
     } catch (error) {
       console.error(`Error thrown from handleAddToCart: ${error.message}`);
-      this.setState({ error: "Unable to add product to cart" });
+      setError("Unable to add product to cart");
     }
   };
 
