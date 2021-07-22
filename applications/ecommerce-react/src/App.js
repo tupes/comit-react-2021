@@ -1,62 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Route, Redirect, useHistory } from "react-router-dom";
 
 import ProductsPage from "./pages/ProductsPage.js";
 import SignupPage from "./pages/SignupPage.js";
 import LoginPage from "./pages/LoginPage.js";
 
-import Header from "./components/classComponents/Header.js";
+import Header from "./components/Header.js";
 import Footer from "./components/Footer.js";
 
-import * as dataRepository from "./services/dataRepository.js";
 import * as userRepository from "./services/userRepository.js";
 import * as authRepository from "./services/firebaseClient.js";
+
+import { UserContext } from "./providers/UserProvider";
+import { CartContext } from "./providers/CartProvider";
 
 function getButtonText() {
   return Math.random() > 0.5 ? "Sign up" : "Create an account";
 }
 
 function App() {
+  const { user, setUser } = useContext(UserContext);
+  const { setCart } = useContext(CartContext);
+
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [productCategories, setProductCategories] = useState([]);
 
   const history = useHistory();
-
-  useEffect(() => {
-    const loadData = async () => {
-      console.log("In useEffect function");
-      const [productCategories, products] = await Promise.all([
-        dataRepository.loadProductCategoriesData(),
-        dataRepository.loadProductsData(),
-      ]);
-
-      setProducts(products);
-      setProductCategories(productCategories);
-    };
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    console.log("User state variable changed");
-  }, [user]);
-
-  const handleSelectCategory = (event) => {
-    const category = event.target.id;
-
-    let updatedSelectedCategories;
-    if (selectedCategories.includes(category)) {
-      updatedSelectedCategories = selectedCategories.filter(
-        (selectedCategory) => selectedCategory !== category
-      );
-    } else {
-      updatedSelectedCategories = [...selectedCategories, category];
-    }
-    setSelectedCategories(updatedSelectedCategories);
-  };
 
   const handleCreateUser = async (formValues) => {
     try {
@@ -121,41 +89,9 @@ function App() {
     }
   };
 
-  const handleLogout = async () => {
-    await authRepository.logout();
-    setUser(null);
-  };
-
-  const handleAddToCart = async (event) => {
-    if (!user) return;
-
-    try {
-      const response = await userRepository.addProductToCart({
-        userId: user.id,
-        productId: parseInt(event.target.id),
-      });
-      if (response.status >= 400) {
-        throw new Error(`Response status code from server: ${response.status}`);
-      }
-
-      const addedProduct = response.data;
-      const updatedCart = [...cart, addedProduct];
-      setCart(updatedCart);
-    } catch (error) {
-      console.error(`Error thrown from handleAddToCart: ${error.message}`);
-      setError("Unable to add product to cart");
-    }
-  };
-
   return (
     <div className="container">
-      <Header
-        title="Sports Store"
-        isUserLoggedIn={user}
-        cartCount={cart && cart.length}
-        buttonText={getButtonText()}
-        handleLogout={handleLogout}
-      />
+      <Header title="Sports Store" buttonText={getButtonText()} />
 
       <Route path="/login" exact>
         <LoginPage handleSubmit={handleLogin} error={error} />
@@ -164,14 +100,7 @@ function App() {
         <SignupPage handleSubmit={handleCreateUser} />
       </Route>
       <Route path="/products" exact>
-        <ProductsPage
-          productCategories={productCategories}
-          selectedCategories={selectedCategories}
-          products={products}
-          handleSelectCategory={handleSelectCategory}
-          handleAddToCart={handleAddToCart}
-          isUserLoggedIn={user}
-        />
+        <ProductsPage />
       </Route>
       <Redirect to="/products" />
 
