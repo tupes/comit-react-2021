@@ -9,6 +9,11 @@ export default function CartProvider({ children }) {
   const { user } = useContext(UserContext);
   const [cart, setCart] = useState([]);
 
+  const getUserCart = async () => {
+    const cartResponse = await userRepository.getCart(user.id);
+    setCart(cartResponse.data);
+  };
+
   const handleAddToCart = async (event) => {
     try {
       const response = await userRepository.addProductToCart({
@@ -29,7 +34,7 @@ export default function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ cart, setCart, handleAddToCart }}>
+    <CartContext.Provider value={{ cart, getUserCart, handleAddToCart }}>
       {children}
     </CartContext.Provider>
   );

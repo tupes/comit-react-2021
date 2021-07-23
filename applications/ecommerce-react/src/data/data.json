@@ -62,6 +62,13 @@
       "email": "b@b.com",
       "dob": "",
       "id": 2
+    },
+    {
+      "uid": "v7ZcM08k0KVH2aPwcR4CHoiJspq1",
+      "username": "Catherine",
+      "email": "c@c.com",
+      "dob": "",
+      "id": 3
     }
   ],
   "cart": [
@@ -89,6 +96,11 @@
       "userId": 1,
       "productId": 3,
       "id": 6
+    },
+    {
+      "userId": 3,
+      "productId": 1,
+      "id": 7
     }
   ]
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import ProductCategory from "./ProductCategory.js";
+import ProductCategory from "../ProductCategory.js";
 
 export default class ProductCategories extends React.Component {
   render() {

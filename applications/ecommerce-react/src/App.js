@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Route, Redirect, useHistory } from "react-router-dom";
 
 import ProductsPage from "./pages/ProductsPage.js";
@@ -19,33 +19,22 @@ function getButtonText() {
 }
 
 function App() {
-  const { user, setUser } = useContext(UserContext);
-  const { setCart } = useContext(CartContext);
+  const { user, createUser, loginUser } = useContext(UserContext);
+  const { cart, getUserCart } = useContext(CartContext);
 
   const [error, setError] = useState(null);
 
   const history = useHistory();
 
+  useEffect(() => {
+    if (!cart.length && user && user.id) {
+      getUserCart(user.id);
+    }
+  }, [user, cart]);
+
   const handleCreateUser = async (formValues) => {
     try {
-      const authResponse = await authRepository.createUserAccount(
-        formValues.email,
-        formValues.password
-      );
-
-      const response = await userRepository.createUser({
-        ...formValues,
-        uid: authResponse.user.uid,
-      });
-      const user = {
-        id: response.data.id,
-        uid: response.data.uid,
-        username: response.data.username,
-        email: response.data.email,
-      };
-
-      setUser(user);
-
+      await createUser(formValues);
       history.push("/products");
     } catch (error) {
       console.log(`Error from creating user: ${{ error }}`);
@@ -54,25 +43,7 @@ function App() {
 
   const handleLogin = async (formValues) => {
     try {
-      const authResponse = await authRepository.loginToAccount(
-        formValues.email,
-        formValues.password
-      );
-
-      const response = await userRepository.loginUser({
-        uid: authResponse.user.uid,
-      });
-      const userData = response.data[0];
-      const user = {
-        id: userData.id,
-        uid: userData.uid,
-        username: userData.username,
-        email: userData.email,
-      };
-      const cartResponse = await userRepository.getCart(user.id);
-
-      setUser(user);
-      setCart(cartResponse.data);
+      await loginUser(formValues);
       setError(null);
 
       history.push("/products");
@@ -100,7 +71,7 @@ function App() {
         <SignupPage handleSubmit={handleCreateUser} />
       </Route>
       <Route path="/products" exact>
-        <ProductsPage />
+        <ProductsPage isUserLoggedIn={user} />
       </Route>
       <Redirect to="/products" />
 
