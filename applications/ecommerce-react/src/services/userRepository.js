@@ -18,3 +18,7 @@ export function getCart(userId) {
 export function addProductToCart(values) {
   return axios.post(`${HOST}/cart`, values);
 }
+
+export function removeProductFromCart(cartProductId) {
+  return axios.delete(`${HOST}/cart/${cartProductId}`);
+}

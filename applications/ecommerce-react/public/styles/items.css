@@ -52,3 +52,12 @@
 .items h3 {
   grid-area: name;
 }
+
+.quantity {
+  margin-left: var(--small-size);
+  margin-right: var(--small-size);
+}
+
+.product-total {
+  margin-left: var(--small-size);
+}

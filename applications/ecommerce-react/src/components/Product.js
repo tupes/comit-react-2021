@@ -8,7 +8,7 @@ export default function Product(props) {
       <div>${props.price}</div>
       <p>{props.description}</p>
       {props.isUserLoggedIn && (
-        <button id={props.productId} onClick={props.handleAddToCart}>
+        <button onClick={() => props.handleAddToCart(props.productId)}>
           Add to cart
         </button>
       )}

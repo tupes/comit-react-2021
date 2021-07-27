@@ -14,11 +14,11 @@ export default function CartProvider({ children }) {
     setCart(cartResponse.data);
   };
 
-  const handleAddToCart = async (event) => {
+  const handleAddToCart = async (productId) => {
     try {
       const response = await userRepository.addProductToCart({
         userId: user.id,
-        productId: parseInt(event.target.id),
+        productId,
       });
       if (response.status >= 400) {
         throw new Error(`Response status code from server: ${response.status}`);
@@ -33,8 +33,31 @@ export default function CartProvider({ children }) {
     }
   };
 
+  const handleRemoveFromCart = async (cartProductId) => {
+    try {
+      const response = await userRepository.removeProductFromCart(
+        cartProductId
+      );
+      if (response.status >= 400) {
+        throw new Error(`Response status code from server: ${response.status}`);
+      }
+
+      const updatedCart = cart.filter(
+        (cartProduct) => cartProduct.id !== cartProductId
+      );
+      setCart(updatedCart);
+    } catch (error) {
+      console.error(
+        `Error thrown from removeProductFromCart: ${error.message}`
+      );
+      // setError("Unable to add product to cart");
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cart, getUserCart, handleAddToCart }}>
+    <CartContext.Provider
+      value={{ cart, getUserCart, handleAddToCart, handleRemoveFromCart }}
+    >
       {children}
     </CartContext.Provider>
   );

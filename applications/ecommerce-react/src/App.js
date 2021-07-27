@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Route, Redirect, useHistory } from "react-router-dom";
 
 import ProductsPage from "./pages/ProductsPage.js";
+import CartPage from "./pages/CartPage.js";
 import SignupPage from "./pages/SignupPage.js";
 import LoginPage from "./pages/LoginPage.js";
 
@@ -72,6 +73,9 @@ function App() {
       </Route>
       <Route path="/products" exact>
         <ProductsPage isUserLoggedIn={user} />
+      </Route>
+      <Route path="/cart" exact>
+        <CartPage isUserLoggedIn={user} />
       </Route>
       <Redirect to="/products" />
 
