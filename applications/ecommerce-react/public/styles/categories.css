@@ -1,4 +1,5 @@
 .categories {
+  flex-grow: 1;
   padding-left: var(--med-size);
 }
 

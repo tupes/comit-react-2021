@@ -8,7 +8,6 @@ import { CartContext } from "../providers/CartProvider";
 
 export default function CartPage(props) {
   const { products } = useContext(ProductsContext);
-
   const { cart, handleAddToCart, handleRemoveFromCart } =
     useContext(CartContext);
 
@@ -31,7 +30,7 @@ export default function CartPage(props) {
   });
 
   return (
-    <>
+    <main className="cart-page">
       <CartProductsList
         products={Object.values(cartProducts)}
         handleAddToCart={handleAddToCart}
@@ -39,6 +38,6 @@ export default function CartPage(props) {
         isUserLoggedIn={props.isUserLoggedIn}
       />
       <CartSummary totalPrice={totalPrice} />
-    </>
+    </main>
   );
 }

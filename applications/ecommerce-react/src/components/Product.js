@@ -1,12 +1,15 @@
 import React from "react";
+import ProductInfo from "./ProductInfo";
 
 export default function Product(props) {
   return (
     <li>
-      <img src={props.imageUrl} alt="" />
-      <h3>{props.name}</h3>
-      <div>${props.price}</div>
-      <p>{props.description}</p>
+      <ProductInfo
+        imageUrl={props.imageUrl}
+        name={props.name}
+        price={props.price}
+        description={props.description}
+      />
       {props.isUserLoggedIn && (
         <button onClick={() => props.handleAddToCart(props.productId)}>
           Add to cart

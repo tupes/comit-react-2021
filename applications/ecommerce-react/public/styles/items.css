@@ -1,3 +1,7 @@
+.items {
+  flex-grow: 3;
+}
+
 .items > ul {
   display: flex;
   flex-direction: column;

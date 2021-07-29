@@ -17,7 +17,7 @@ export default function ProductsPage(props) {
   const { handleAddToCart } = useContext(CartContext);
 
   return (
-    <>
+    <main className="products-page">
       <ProductCategories
         productCategories={productCategories}
         selectedCategories={selectedCategories}
@@ -28,6 +28,6 @@ export default function ProductsPage(props) {
         isUserLoggedIn={props.isUserLoggedIn}
         handleAddToCart={handleAddToCart}
       />
-    </>
+    </main>
   );
 }

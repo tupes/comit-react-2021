@@ -1,0 +1,10 @@
+.cart-summary {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: var(--small-size);
+}
+
+.cart-summary button {
+  max-width: 20%;
+}
