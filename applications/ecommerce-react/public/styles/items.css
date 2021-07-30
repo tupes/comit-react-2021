@@ -25,6 +25,7 @@
   border-radius: var(--med-border-radius);
 
   background-color: var(--light-gray);
+  color: var(--black);
 }
 
 .items img {

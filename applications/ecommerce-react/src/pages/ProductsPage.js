@@ -18,16 +18,22 @@ export default function ProductsPage(props) {
 
   return (
     <main className="products-page">
-      <ProductCategories
-        productCategories={productCategories}
-        selectedCategories={selectedCategories}
-        handleSelectCategory={handleSelectCategory}
-      />
-      <ProductsList
-        products={products}
-        isUserLoggedIn={props.isUserLoggedIn}
-        handleAddToCart={handleAddToCart}
-      />
+      {props.error ? (
+        <p className="error-message">{props.error}</p>
+      ) : (
+        <>
+          <ProductCategories
+            productCategories={productCategories}
+            selectedCategories={selectedCategories}
+            handleSelectCategory={handleSelectCategory}
+          />
+          <ProductsList
+            products={products}
+            isUserLoggedIn={props.isUserLoggedIn}
+            handleAddToCart={handleAddToCart}
+          />
+        </>
+      )}
     </main>
   );
 }

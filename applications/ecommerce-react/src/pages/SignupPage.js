@@ -1,80 +1,83 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-export default class SignupPage extends Component {
-  state = {
+export default function SignupPage(props) {
+  const [formValues, setFormValues] = useState({
     username: "",
     email: "",
     dob: "",
     password: "",
-  };
+  });
+  const [error, setError] = useState(null);
 
-  handleChange = (event) => {
+  const handleChange = (event) => {
     console.log(event.target.value);
-    this.setState({ [event.target.name]: event.target.value });
+    setFormValues({ [event.target.name]: event.target.value });
   };
 
-  handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    this.props.handleSubmit(this.state);
+    try {
+      await props.handleSubmit(formValues);
+    } catch (error) {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      setError(errorMessage);
+    }
   };
 
-  render() {
-    return (
-      <>
-        <div></div>
-        <form className="user-form" onSubmit={this.handleSubmit} method="post">
-          <ul>
-            <li>
-              <label>
-                Username
-                <input
-                  onChange={this.handleChange}
-                  value={this.state.username}
-                  type="text"
-                  name="username"
-                  required
-                />
-              </label>
-            </li>
-            <li>
-              <label>
-                Email
-                <input
-                  onChange={this.handleChange}
-                  value={this.state.email}
-                  type="email"
-                  name="email"
-                  required
-                />
-              </label>
-            </li>
-            <li>
-              <label>
-                Date of Birth
-                <input
-                  onChange={this.handleChange}
-                  value={this.state.dob}
-                  type="date"
-                  name="dob"
-                />
-              </label>
-            </li>
-            <li>
-              <label>
-                Password
-                <input
-                  onChange={this.handleChange}
-                  value={this.state.password}
-                  type="password"
-                  name="password"
-                />
-              </label>
-            </li>
-          </ul>
+  return (
+    <form className="user-form" onSubmit={handleSubmit} method="post">
+      <p>{error}</p>
+      <ul>
+        <li>
+          <label>
+            Username
+            <input
+              onChange={handleChange}
+              value={formValues.username}
+              type="text"
+              name="username"
+              required
+            />
+          </label>
+        </li>
+        <li>
+          <label>
+            Email
+            <input
+              onChange={handleChange}
+              value={formValues.email}
+              type="email"
+              name="email"
+              required
+            />
+          </label>
+        </li>
+        <li>
+          <label>
+            Date of Birth
+            <input
+              onChange={handleChange}
+              value={formValues.dob}
+              type="date"
+              name="dob"
+            />
+          </label>
+        </li>
+        <li>
+          <label>
+            Password
+            <input
+              onChange={handleChange}
+              value={formValues.password}
+              type="password"
+              name="password"
+            />
+          </label>
+        </li>
+      </ul>
 
-          <button type="submit">Submit</button>
-        </form>
-      </>
-    );
-  }
+      <button type="submit">Submit</button>
+    </form>
+  );
 }

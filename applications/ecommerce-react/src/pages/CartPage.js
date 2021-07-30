@@ -31,6 +31,7 @@ export default function CartPage(props) {
 
   return (
     <main className="cart-page">
+      {props.error ? <p>{props.error}</p> : null}
       <CartProductsList
         products={Object.values(cartProducts)}
         handleAddToCart={handleAddToCart}

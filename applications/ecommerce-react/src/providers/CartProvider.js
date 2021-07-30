@@ -2,16 +2,23 @@ import React, { useState, useContext, createContext } from "react";
 
 import * as userRepository from "../services/userRepository.js";
 import { UserContext } from "./UserProvider";
+import { ErrorContext } from "./ErrorProvider";
 
 export const CartContext = createContext();
 
 export default function CartProvider({ children }) {
+  const { setCartLoadingError, setCartUpdateError } = useContext(ErrorContext);
   const { user } = useContext(UserContext);
+
   const [cart, setCart] = useState([]);
 
   const getUserCart = async () => {
-    const cartResponse = await userRepository.getCart(user.id);
-    setCart(cartResponse.data);
+    try {
+      const cartResponse = await userRepository.getCart(user.id);
+      setCart(cartResponse.data);
+    } catch (error) {
+      setCartLoadingError(error);
+    }
   };
 
   const handleAddToCart = async (productId) => {
@@ -28,8 +35,7 @@ export default function CartProvider({ children }) {
       const updatedCart = [...cart, addedProduct];
       setCart(updatedCart);
     } catch (error) {
-      console.error(`Error thrown from handleAddToCart: ${error.message}`);
-      // setError("Unable to add product to cart");
+      setCartUpdateError(error);
     }
   };
 
@@ -47,10 +53,7 @@ export default function CartProvider({ children }) {
       );
       setCart(updatedCart);
     } catch (error) {
-      console.error(
-        `Error thrown from removeProductFromCart: ${error.message}`
-      );
-      // setError("Unable to add product to cart");
+      setCartUpdateError(error);
     }
   };
 

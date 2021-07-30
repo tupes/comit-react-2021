@@ -1,26 +1,30 @@
 import React, { useState } from "react";
 
 export default function LoginPage(props) {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (event) => {
     setFormValues({ ...formValues, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    props.handleSubmit(formValues);
+    try {
+      await props.handleSubmit(formValues);
+    } catch (error) {
+      const errorMessage = "Invalid email or password";
+      console.log(errorMessage);
+      setError(errorMessage);
+    }
   };
 
   return (
     <form className="user-form" onSubmit={handleSubmit} method="post">
-      <p>{props.error}</p>
+      <p>{error}</p>
       <ul>
         <li>
           <label>

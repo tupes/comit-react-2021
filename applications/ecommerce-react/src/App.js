@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Route, Redirect, useHistory } from "react-router-dom";
 
 import ProductsPage from "./pages/ProductsPage.js";
@@ -9,9 +9,7 @@ import LoginPage from "./pages/LoginPage.js";
 import Header from "./components/Header.js";
 import Footer from "./components/Footer.js";
 
-import * as userRepository from "./services/userRepository.js";
-import * as authRepository from "./services/firebaseClient.js";
-
+import { ErrorContext } from "./providers/ErrorProvider";
 import { UserContext } from "./providers/UserProvider";
 import { CartContext } from "./providers/CartProvider";
 
@@ -20,10 +18,9 @@ function getButtonText() {
 }
 
 function App() {
+  const { error, setError } = useContext(ErrorContext);
   const { user, createUser, loginUser } = useContext(UserContext);
   const { cart, getUserCart } = useContext(CartContext);
-
-  const [error, setError] = useState(null);
 
   const history = useHistory();
 
@@ -33,32 +30,19 @@ function App() {
     }
   }, [user, cart]);
 
+  const handleUserRequest = async (userFunc, formValues) => {
+    await userFunc(formValues);
+
+    setError(null);
+    history.push("/products");
+  };
+
   const handleCreateUser = async (formValues) => {
-    try {
-      await createUser(formValues);
-      history.push("/products");
-    } catch (error) {
-      console.log(`Error from creating user: ${{ error }}`);
-    }
+    await handleUserRequest(createUser, formValues);
   };
 
   const handleLogin = async (formValues) => {
-    try {
-      await loginUser(formValues);
-      setError(null);
-
-      history.push("/products");
-    } catch (error) {
-      let errorMessage = "Something went wrong";
-      if (
-        error.code === "auth/user-not-found" ||
-        error.code === "auth/wrong-password"
-      ) {
-        errorMessage = "Unable to login";
-      }
-      console.log(errorMessage);
-      setError(errorMessage);
-    }
+    await handleUserRequest(loginUser, formValues);
   };
 
   return (
@@ -69,13 +53,13 @@ function App() {
         <LoginPage handleSubmit={handleLogin} error={error} />
       </Route>
       <Route path="/signup" exact>
-        <SignupPage handleSubmit={handleCreateUser} />
+        <SignupPage handleSubmit={handleCreateUser} error={error} />
       </Route>
       <Route path="/products" exact>
-        <ProductsPage isUserLoggedIn={user} />
+        <ProductsPage isUserLoggedIn={user} error={error} />
       </Route>
       <Route path="/cart" exact>
-        <CartPage isUserLoggedIn={user} />
+        <CartPage isUserLoggedIn={user} error={error} />
       </Route>
       <Redirect to="/products" />
 
