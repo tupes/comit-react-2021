@@ -19,7 +19,9 @@ export default function Header(props) {
       </h1>
       {user ? (
         <div>
-          <Link className="link" to="/cart">{`Cart: ${cartCount}`}</Link>
+          {cartCount > 0 ? (
+            <Link className="link" to="/cart">{`Cart: ${cartCount}`}</Link>
+          ) : null}
           <button id="logout" onClick={handleLogout}>
             Logout
           </button>

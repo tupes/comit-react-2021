@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 
 import * as dataRepository from "../services/dataRepository.js";
-import { ErrorContext } from "./ErrorProvider";
 
 export const ProductsContext = createContext();
 
 export default function ProductsProvider({ children }) {
-  const { setDataLoadingError } = useContext(ErrorContext);
-
   const [products, setProducts] = useState([]);
   const [productCategories, setProductCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -24,8 +22,8 @@ export default function ProductsProvider({ children }) {
 
         setProducts(products);
         setProductCategories(productCategories);
-      } catch (error) {
-        setDataLoadingError(error);
+      } catch (err) {
+        setError(err);
       }
     };
 

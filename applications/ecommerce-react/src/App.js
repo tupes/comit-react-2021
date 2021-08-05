@@ -9,7 +9,6 @@ import LoginPage from "./pages/LoginPage.js";
 import Header from "./components/Header.js";
 import Footer from "./components/Footer.js";
 
-import { ErrorContext } from "./providers/ErrorProvider";
 import { UserContext } from "./providers/UserProvider";
 import { CartContext } from "./providers/CartProvider";
 
@@ -18,22 +17,20 @@ function getButtonText() {
 }
 
 function App() {
-  const { error, setError } = useContext(ErrorContext);
   const { user, createUser, loginUser } = useContext(UserContext);
-  const { cart, getUserCart } = useContext(CartContext);
+  const { cart, loadUserCart } = useContext(CartContext);
 
   const history = useHistory();
 
   useEffect(() => {
-    if (!cart.length && user && user.id) {
-      getUserCart(user.id);
+    if (!cart && user && user.id) {
+      loadUserCart(user.id);
     }
   }, [user, cart]);
 
   const handleUserRequest = async (userFunc, formValues) => {
     await userFunc(formValues);
 
-    setError(null);
     history.push("/products");
   };
 
@@ -50,16 +47,16 @@ function App() {
       <Header title="Sports Store" buttonText={getButtonText()} />
 
       <Route path="/login" exact>
-        <LoginPage handleSubmit={handleLogin} error={error} />
+        <LoginPage handleSubmit={handleLogin} />
       </Route>
       <Route path="/signup" exact>
-        <SignupPage handleSubmit={handleCreateUser} error={error} />
+        <SignupPage handleSubmit={handleCreateUser} />
       </Route>
       <Route path="/products" exact>
-        <ProductsPage isUserLoggedIn={user} error={error} />
+        <ProductsPage isUserLoggedIn={user} />
       </Route>
       <Route path="/cart" exact>
-        <CartPage isUserLoggedIn={user} error={error} />
+        <CartPage isUserLoggedIn={user} />
       </Route>
       <Redirect to="/products" />
 

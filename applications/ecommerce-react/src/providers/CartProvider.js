@@ -2,23 +2,60 @@ import React, { useState, useContext, createContext } from "react";
 
 import * as userRepository from "../services/userRepository.js";
 import { UserContext } from "./UserProvider";
-import { ErrorContext } from "./ErrorProvider";
+import { ProductsContext } from "./ProductsProvider";
 
 export const CartContext = createContext();
 
 export default function CartProvider({ children }) {
-  const { setCartLoadingError, setCartUpdateError } = useContext(ErrorContext);
   const { user } = useContext(UserContext);
+  const { products } = useContext(ProductsContext);
 
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(null);
+  const [cartLoadingError, setCartLoadingError] = useState(null);
+  const [cartUpdateError, setCartUpdateError] = useState(null);
 
-  const getUserCart = async () => {
+  const loadUserCart = async () => {
     try {
       const cartResponse = await userRepository.getCart(user.id);
       setCart(cartResponse.data);
     } catch (error) {
       setCartLoadingError(error);
     }
+  };
+
+  const getUserCart = () => {
+    if (!cart) return null;
+
+    const cartProducts = {};
+
+    cart &&
+      cart.forEach((cartProduct) => {
+        const product = products.find(
+          (product) => product.id === cartProduct.productId
+        );
+        if (cartProducts[product.id]) {
+          cartProducts[product.id].quantity += 1;
+        } else {
+          cartProducts[product.id] = {
+            ...product,
+            quantity: 1,
+            cartProductId: cartProduct.id,
+          };
+        }
+      });
+
+    return Object.values(cartProducts);
+  };
+
+  const getTotalPrice = () => {
+    const userCart = getUserCart();
+    if (!userCart) return 0;
+
+    let totalPrice = 0;
+    userCart.forEach(({ quantity, price }) => {
+      totalPrice += quantity * price;
+    });
+    return totalPrice;
   };
 
   const handleAddToCart = async (productId) => {
@@ -59,7 +96,13 @@ export default function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ cart, getUserCart, handleAddToCart, handleRemoveFromCart }}
+      value={{
+        loadUserCart,
+        cart: getUserCart(),
+        totalPrice: getTotalPrice(),
+        handleAddToCart,
+        handleRemoveFromCart,
+      }}
     >
       {children}
     </CartContext.Provider>

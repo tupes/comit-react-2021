@@ -69,6 +69,27 @@
       "email": "c@c.com",
       "dob": "",
       "id": 3
+    },
+    {
+      "uid": "FUWXCZIjl9VSgsKUv1U4Jx7gqX52",
+      "username": "Mark",
+      "email": "h@h.com",
+      "dob": "",
+      "id": 4
+    },
+    {
+      "uid": "0uYaDui3xjWy4WGH4YnUhCrfSfM2",
+      "username": "Harold",
+      "email": "g@g.com",
+      "dob": "",
+      "id": 5
+    },
+    {
+      "uid": "JNfKhQOqpDhKN4R8D0UdRsO4XNf2",
+      "username": "Jerry",
+      "email": "j@j.com",
+      "dob": "",
+      "id": 6
     }
   ],
   "cart": [
@@ -106,6 +127,21 @@
       "userId": 1,
       "productId": 2,
       "id": 11
+    },
+    {
+      "userId": 1,
+      "productId": 3,
+      "id": 12
+    },
+    {
+      "userId": 6,
+      "productId": 4,
+      "id": 13
+    },
+    {
+      "userId": 6,
+      "productId": 4,
+      "id": 14
     }
   ]
 }
