@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 
 import * as authRepository from "../services/firebaseClient.js";
 import * as userRepository from "../services/userRepository.js";
@@ -16,6 +16,17 @@ function buildUser(userData) {
 
 export default function UserProvider(props) {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const attemptLoadUser = async () => {
+      const storedToken = localStorage.getItem("token");
+      if (!storedToken) return;
+
+      setToken(storedToken);
+    };
+    attemptLoadUser();
+  }, []);
 
   const createUser = async (formValues) => {
     const authResponse = await authRepository.createUserAccount(
@@ -38,6 +49,10 @@ export default function UserProvider(props) {
       formValues.email,
       formValues.password
     );
+
+    const token = await authRepository.getToken();
+    localStorage.setItem("token", token);
+    setToken(token);
 
     const response = await userRepository.loginUser({
       uid: authResponse.user.uid,

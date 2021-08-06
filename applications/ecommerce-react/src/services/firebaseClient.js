@@ -20,6 +20,10 @@ export function loginToAccount(email, password) {
   return auth.signInWithEmailAndPassword(email, password);
 }
 
+export function getToken() {
+  return auth.currentUser.getIdToken(true);
+}
+
 export function logout() {
   return auth.signOut();
 }
